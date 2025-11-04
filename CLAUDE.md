@@ -66,6 +66,9 @@ All Claude Code configurations are pre-loaded and ready to use.
 - `CLAUDE.md` - This file, context for working on this repository
 - `.claude/` - Repository-level Claude Code configuration (if needed)
 - `django-template/` - Django web development template
+- `react-template/` - React + Vite + TypeScript frontend template
+- `flask-template/` - Flask REST API backend template
+- `tkinter-template/` - Tkinter desktop application template
 - *(More templates to be added)*
 
 ## Code Style and Conventions
@@ -151,12 +154,11 @@ All templates must:
 ## Future Templates
 
 Planned templates:
-- React (frontend development)
 - FastAPI (Python async APIs)
 - Node/Express (JavaScript backend)
 - Vue.js (frontend development)
 - Next.js (React framework)
-- Flask (Python microservices)
+- Electron (cross-platform desktop apps)
 - And more based on community requests
 
 ## Support and Contributions

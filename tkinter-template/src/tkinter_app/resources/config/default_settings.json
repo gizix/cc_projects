@@ -1,0 +1,19 @@
+{
+  "theme": "litera",
+  "window_size": {
+    "width": 800,
+    "height": 600
+  },
+  "window_position": {
+    "x": null,
+    "y": null
+  },
+  "recent_files": [],
+  "max_recent_files": 10,
+  "auto_save": true,
+  "auto_save_interval": 300,
+  "font_family": "Segoe UI",
+  "font_size": 10,
+  "show_toolbar": true,
+  "show_statusbar": true
+}

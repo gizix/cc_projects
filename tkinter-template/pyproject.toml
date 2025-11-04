@@ -1,0 +1,57 @@
+[project]
+name = "tkinter-app"
+version = "0.1.0"
+description = "Modern Tkinter application with MVC architecture"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ttkbootstrap>=1.10.1",
+    "pillow>=10.0.0",
+    "platformdirs>=4.0.0",
+    "loguru>=0.7.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-xvfb>=3.0.0",
+    "mypy>=1.8.0",
+    "ruff>=0.2.0",
+    "pyinstaller>=6.0.0",
+]
+
+[project.scripts]
+tkinter-app = "tkinter_app.app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "SIM"]
+ignore = ["E501"]  # Line too long (handled by formatter)
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+strict_optional = true
+no_implicit_optional = true
+
+[[tool.mypy.overrides]]
+module = ["ttkbootstrap.*", "PIL.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

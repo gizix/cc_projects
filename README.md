@@ -73,6 +73,58 @@ See `react-template/README.md` for detailed usage instructions.
 
 ---
 
+### Flask REST API Template
+
+**Location**: `flask-template/`
+
+A production-ready Flask backend template featuring:
+- Flask 3.x with Application Factory pattern and Blueprint-based architecture
+- JWT authentication with Flask-JWT-Extended for secure API access
+- SQLAlchemy ORM with Flask-Migrate for database management
+- Marshmallow schemas for request/response serialization and validation
+- Service Layer pattern for clean business logic separation
+- Pytest testing framework with comprehensive fixtures
+- Docker support with docker-compose for easy deployment
+- Code quality tools: Black, flake8, isort, mypy
+- 11 custom slash commands (/run, /test, /db-migrate, /create-blueprint, etc.)
+- 6 specialized agents (security, API optimization, testing, schema expert, migrations, blueprints)
+- 4 skills for Flask patterns, REST API generation, auth systems, and database validation
+- Complete example implementation with User auth system and CRUD operations
+- Comprehensive configuration and environment templates
+
+**Best For**: REST APIs, microservices, backend services, API-first applications
+
+See `flask-template/README.md` for detailed usage instructions.
+
+---
+
+### Tkinter Desktop Application Template
+
+**Location**: `tkinter-template/`
+
+A modern Python desktop application template with:
+- Python 3.13+ with modern type hints and async support
+- ttkbootstrap for modern UI themes (20+ professional themes available)
+- MVC architecture with observer pattern for clean separation of concerns
+- uv package manager for lightning-fast dependency management
+- PyInstaller for building standalone executables (Windows, macOS, Linux)
+- Pytest with GUI testing utilities for comprehensive test coverage
+- Code quality tools: ruff (linting/formatting), mypy (type checking)
+- Form validation utilities with real-time feedback
+- Config management with JSON persistence
+- Thread-safe background operations for responsive UIs
+- 10 custom slash commands (/dev, /test, /build, /new-view, /new-dialog, etc.)
+- 5 specialized agents (Tkinter expert, GUI security, performance, testing, threading)
+- 3 skills for MVC scaffolding, dialog generation, and form validation
+- Complete example implementation with Todo list app demonstrating best practices
+- Detailed setup and architecture documentation
+
+**Best For**: Desktop applications, GUI tools, standalone utilities, cross-platform applications
+
+See `tkinter-template/README.md` for detailed usage instructions.
+
+---
+
 *More templates coming soon! Check back for FastAPI, Node/Express, Vue.js, Next.js, and other frameworks.*
 
 ## Template Structure
@@ -159,23 +211,15 @@ Each template is designed to be a starting point. You can:
 
 For detailed guidance on extending configurations, ask Claude Code about best practices or check the Claude Code documentation.
 
-## Contributing
+## Using These Templates
 
-Want to add a new template or improve an existing one?
+These templates are provided **as-is** for your own use and modification. Feel free to:
 
-1. Fork this repository
-2. Create a new template following the standard structure
-3. Include comprehensive documentation
-4. Test thoroughly with Claude Code
-5. Submit a pull request
+- Download and use any template for your projects
+- Fork this repository and customize templates for your needs
+- Adapt the configurations to match your workflow
 
-## Template Requests
-
-Have a framework or project type you'd like to see? Open an issue with:
-- Framework/technology name
-- Common use cases
-- Must-have commands or agents
-- Any specific requirements
+**Note**: This is a solo project and I don't have time to review pull requests or implement feature requests. The templates are shared in the hope they'll be useful, but without active maintenance or support.
 
 ## Requirements
 
@@ -190,9 +234,11 @@ MIT License - See LICENSE file for details
 
 ## Support
 
-- Issues: Use GitHub Issues for bug reports or questions
-- Discussions: Share your experiences and ask questions in GitHub Discussions
-- Documentation: Check the [Claude Code docs](https://docs.claude.com/claude-code) for more information
+These templates are provided as-is without active support. For help:
+
+- **Claude Code Documentation**: Check the [Claude Code docs](https://docs.claude.com/claude-code) for configuration guidance
+- **Template Issues**: You're welcome to open GitHub Issues to report problems, but responses may be limited or delayed
+- **Your Own Modifications**: Feel free to fork and customize these templates to better suit your needs
 
 ---
 
