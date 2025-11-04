@@ -1,0 +1,22 @@
+{
+  "model": "sonnet",
+  "outputStyle": "markdown",
+  "environmentVariables": {
+    "FLASK_APP": "wsgi.py",
+    "FLASK_ENV": "development",
+    "PYTHONPATH": "."
+  },
+  "hooks": {
+    "PostToolUse": {
+      "command": "black {filePath}",
+      "patterns": ["*.py"],
+      "description": "Auto-format Python files with Black after editing"
+    }
+  },
+  "permissions": {
+    "deny": {
+      "read": [".env", "*.key", "*.pem", "secrets.*", "*.secret"],
+      "write": [".env", "*.key", "*.pem", "secrets.*", "*.secret"]
+    }
+  }
+}

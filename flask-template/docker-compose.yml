@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Flask application
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://flask_user:flask_password@db:5432/flask_db
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-change-me-in-production}
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./instance:/app/instance
+    restart: unless-stopped
+    networks:
+      - flask-network
+
+  # PostgreSQL database
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=flask_db
+      - POSTGRES_USER=flask_user
+      - POSTGRES_PASSWORD=flask_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - flask-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flask_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for caching/sessions
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - flask-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional: Nginx reverse proxy
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - web
+  #   restart: unless-stopped
+  #   networks:
+  #     - flask-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  flask-network:
+    driver: bridge
