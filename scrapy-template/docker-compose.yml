@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  # Scrapy spider service
+  scrapy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scrapy_app
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=scrapy
+      - POSTGRES_USER=scrapy
+      - POSTGRES_PASSWORD=changeme
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGO_URI=mongodb://mongo:27017/
+      - LOG_LEVEL=INFO
+    depends_on:
+      - postgres
+      - redis
+      - mongo
+    command: scrapy list
+    networks:
+      - scrapy_network
+
+  # PostgreSQL database
+  postgres:
+    image: postgres:15-alpine
+    container_name: scrapy_postgres
+    environment:
+      POSTGRES_DB: scrapy
+      POSTGRES_USER: scrapy
+      POSTGRES_PASSWORD: changeme
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scrapy"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scrapy_network
+
+  # Redis for distributed scraping / caching
+  redis:
+    image: redis:7-alpine
+    container_name: scrapy_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scrapy_network
+
+  # MongoDB for document storage
+  mongo:
+    image: mongo:7
+    container_name: scrapy_mongo
+    environment:
+      MONGO_INITDB_DATABASE: scrapy
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scrapy_network
+
+  # Optional: Scrapyd for spider deployment and management
+  scrapyd:
+    image: python:3.11-slim
+    container_name: scrapy_scrapyd
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - scrapyd_data:/var/lib/scrapyd
+    ports:
+      - "6800:6800"
+    command: >
+      bash -c "
+      pip install scrapyd scrapyd-client &&
+      scrapyd
+      "
+    networks:
+      - scrapy_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  mongo_data:
+    driver: local
+  scrapyd_data:
+    driver: local
+
+networks:
+  scrapy_network:
+    driver: bridge

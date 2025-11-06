@@ -1,0 +1,33 @@
+{
+  "model": "sonnet",
+  "env": {
+    "SCRAPY_SETTINGS_MODULE": "project_name.settings"
+  },
+  "permissions": {
+    "allow": [
+      "*"
+    ],
+    "ask": [],
+    "deny": [
+      ".env",
+      "*.key",
+      "*.pem",
+      "secrets.*"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo $FILE | grep -E '\\.py$'; then black $FILE 2>/dev/null || true; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "outputStyle": "markdown",
+  "cleanupPeriodDays": 30
+}

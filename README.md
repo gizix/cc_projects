@@ -177,6 +177,32 @@ See `fastapi-template/README.md` for detailed usage instructions.
 
 ---
 
+### Scrapy Web Scraping Template
+
+**Location**: `scrapy-template/`
+
+A production-ready Scrapy web scraping template featuring:
+- Scrapy 2.11+ with modern Python 3.9+ for robust web scraping
+- Playwright integration for JavaScript-rendered pages with browser automation
+- SQLAlchemy + PostgreSQL, MongoDB, and Redis support for data storage
+- Item Loaders with processors for data cleaning and validation
+- Comprehensive middleware (fake user agents, proxies, retry logic, stats tracking)
+- Multiple pipeline examples (validation, duplicate filtering, database storage, file export)
+- Docker and docker-compose for containerized deployment with full stack
+- Code quality tools: Black, isort, flake8, mypy, pre-commit hooks
+- Pytest with spider contracts, fixtures, and comprehensive test examples
+- 10 custom slash commands (/create-spider, /run-spider, /test-spider, /shell, /export-data, etc.)
+- 6 specialized agents (spider dev, pipeline expert, performance tuner, deployment helper, testing assistant, security advisor)
+- 4 skills for spider generation, data pipelines, Docker deployment, and test coverage
+- Complete example spiders (basic, CrawlSpider, Playwright) demonstrating best practices
+- Emphasis on ethical scraping with robots.txt compliance and rate limiting
+
+**Best For**: Web scraping projects, data extraction, automated crawling, JavaScript-heavy sites, large-scale scraping
+
+See `scrapy-template/README.md` for detailed usage instructions.
+
+---
+
 *More templates coming soon! Check back for Node/Express, Vue.js, Next.js, and other frameworks.*
 
 ## Template Structure
