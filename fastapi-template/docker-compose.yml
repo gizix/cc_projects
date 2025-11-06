@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database
+  db:
+    image: postgres:16-alpine
+    container_name: fastapi_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-fastapi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fastapi}
+      POSTGRES_DB: ${POSTGRES_DB:-fastapi}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fastapi}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fastapi-network
+
+  # FastAPI web application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_web
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-fastapi}:${POSTGRES_PASSWORD:-fastapi}@db:5432/${POSTGRES_DB:-fastapi}
+    networks:
+      - fastapi-network
+
+volumes:
+  postgres_data:
+
+networks:
+  fastapi-network:
+    driver: bridge

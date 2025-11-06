@@ -151,7 +151,33 @@ See `streamlit-template/README.md` for detailed usage instructions.
 
 ---
 
-*More templates coming soon! Check back for FastAPI, Node/Express, Vue.js, Next.js, and other frameworks.*
+### FastAPI REST API Template
+
+**Location**: `fastapi-template/`
+
+A production-ready FastAPI backend template featuring:
+- FastAPI 0.115.x with modern async patterns and automatic OpenAPI documentation
+- Async SQLAlchemy 2.0 with Alembic migrations for database management
+- JWT authentication with OAuth2 password flow for secure API access
+- Repository pattern with service layer for clean architecture and testability
+- Pydantic v2 for request/response validation and settings management
+- Pytest with async support and in-memory SQLite for fast testing
+- Docker with multi-stage builds and docker-compose for PostgreSQL
+- uv package manager for ultra-fast dependency management
+- Code quality tools: Ruff (linting/formatting), MyPy (strict type checking), pre-commit hooks
+- 10 custom slash commands (/dev, /test, /migrate, /format, /docker-up, etc.)
+- Complete example implementation with User authentication and CRUD operations
+- Comprehensive type hints with MyPy strict mode throughout
+- Health check endpoints and proper error handling
+- CORS middleware configuration for frontend integration
+
+**Best For**: REST APIs, microservices, async backends, high-performance APIs, modern Python web services
+
+See `fastapi-template/README.md` for detailed usage instructions.
+
+---
+
+*More templates coming soon! Check back for Node/Express, Vue.js, Next.js, and other frameworks.*
 
 ## Template Structure
 
