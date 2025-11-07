@@ -1,0 +1,202 @@
+[project]
+name = "quart-template"
+version = "1.0.0"
+description = "Quart async web application template with JWT auth, SQLAlchemy, and WebSocket support"
+authors = [
+    {name = "Your Name", email = "you@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+dependencies = [
+    # Core framework
+    "quart>=0.19.0",
+    "quart-schema>=0.19.0",
+
+    # Database
+    "sqlalchemy[asyncio]>=2.0.0",
+    "aiosqlite>=0.19.0",  # For SQLite async support
+    # For PostgreSQL: "asyncpg>=0.29.0",
+    # For MySQL: "aiomysql>=0.2.0",
+
+    # Authentication
+    "pyjwt>=2.8.0",
+    "werkzeug>=3.0.0",  # For password hashing
+
+    # Validation
+    "pydantic>=2.5.0",
+    "pydantic[email]>=2.5.0",
+
+    # Environment & Config
+    "python-dotenv>=1.0.0",
+
+    # ASGI Server
+    "hypercorn>=0.16.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.25.0",  # For test client
+
+    # Code Quality
+    "ruff>=0.1.0",  # Fast linter (replaces flake8, isort, etc.)
+    "black>=23.11.0",  # Code formatter
+    "mypy>=1.7.0",  # Type checking
+
+    # Database migrations
+    "alembic>=1.13.0",
+]
+
+postgres = [
+    "asyncpg>=0.29.0",
+    "psycopg2-binary>=2.9.0",  # For Alembic
+]
+
+mysql = [
+    "aiomysql>=0.2.0",
+    "pymysql>=1.1.0",  # For Alembic
+]
+
+extensions = [
+    "quart-cors>=0.7.0",  # CORS support
+    "quart-rate-limiter>=0.9.0",  # Rate limiting
+]
+
+all = [
+    "quart-template[dev,postgres,mysql,extensions]",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/quart-template"
+Repository = "https://github.com/yourusername/quart-template"
+Documentation = "https://github.com/yourusername/quart-template#readme"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+# Ruff configuration
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "W191",  # indentation contains tabs
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports in __init__.py
+"tests/**/*.py" = ["ARG"]  # Allow unused arguments in tests
+
+[tool.black]
+# Black code formatter configuration
+line-length = 100
+target-version = ["py311"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+# Mypy type checking configuration
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+
+# Per-module options
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+[[tool.mypy.overrides]]
+module = [
+    "quart_schema.*",
+    "sqlalchemy.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+# Pytest configuration
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+
+# Coverage options
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--strict-config",
+]
+
+markers = [
+    "asyncio: mark test as async",
+    "slow: mark test as slow",
+]
+
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+# Coverage configuration
+source = ["src"]
+branch = true
+omit = [
+    "tests/*",
+    "**/__init__.py",
+]
+
+[tool.coverage.report]
+# Coverage report configuration
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@abstractmethod",
+    "@abc.abstractmethod",
+]

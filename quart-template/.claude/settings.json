@@ -1,0 +1,6 @@
+{
+  "workingDirectory": ".",
+  "environment": {
+    "PYTHONPATH": "${workspaceFolder}/src"
+  }
+}
