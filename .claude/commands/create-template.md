@@ -45,6 +45,34 @@ Skips interactive wizard and proceeds directly to creation.
 - Know exactly what you want
 - Creating similar templates quickly
 
+## Related Commands
+
+### For Python Projects: `/new-python-project`
+
+If you're specifically working with **Python**, consider using `/new-python-project` instead:
+
+```
+/new-python-project [project-description]
+```
+
+This specialized command:
+- ✅ Focuses exclusively on Python frameworks
+- ✅ Provides intelligent framework recommendations
+- ✅ Considers project complexity, performance needs, and your experience
+- ✅ Recommends from: Django, Flask, FastAPI, Streamlit, Scrapy, Jupyter ML
+- ✅ Asks targeted questions about Python-specific requirements
+- ✅ Can automatically hand off to create the recommended template
+
+**Use `/new-python-project` when**:
+- Building any Python-based project
+- Unsure which Python framework to choose
+- Want framework recommendation before template creation
+
+**Use `/create-template` when**:
+- Working with non-Python frameworks (React, Vue, Node, etc.)
+- You already know the exact framework you want
+- Creating templates for any technology stack
+
 ## Process Flow
 
 ### Interactive Mode Process
