@@ -1,6 +1,24 @@
 {
+  "model": "sonnet",
   "workingDirectory": ".",
   "environment": {
     "PYTHONPATH": "${workspaceFolder}/src"
+  },
+  "permissions": {
+    "allow": ["*"],
+    "deny": [".env", ".env.local", "*.key", "*.pem", "credentials.json"]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ruff format --quiet src tests 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
   }
 }

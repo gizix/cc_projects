@@ -144,3 +144,18 @@ def register_lifecycle_hooks(app: Quart) -> None:
         # Close database connections
         if hasattr(app, "db_engine"):
             await app.db_engine.dispose()
+
+
+# Default app instance for simple usage (Hypercorn CLI, testing)
+# This allows using both 'src.app:app' and 'src.app:create_app()' patterns
+app = Quart(__name__)
+
+
+async def _init_app():
+    """Initialize the default app instance."""
+    global app
+    app = await create_app()
+
+
+# Note: In production, use create_app() with explicit config:
+# hypercorn "src.app:create_app('production')" --bind 0.0.0.0:8000

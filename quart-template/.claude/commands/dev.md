@@ -1,23 +1,40 @@
 ---
-description: Start development server with hot reload
+description: Run Hypercorn development server with hot-reload
+argument-hint: [--port PORT]
+allowed-tools: Bash(*)
+model: sonnet
 ---
 
-Start the Quart development server with hot reloading enabled.
+Start the Quart development server with hot-reload enabled using Hypercorn.
 
-Run the following command:
+## Arguments
+
+- `$1`: Port number (optional, defaults to 5000)
+
+## Usage
+
+- `/dev` - Start on default port 5000
+- `/dev 8080` - Start on custom port 8080
+
+## What This Does
+
+1. Starts Hypercorn ASGI server
+2. Enables auto-reload on code changes
+3. Binds to 0.0.0.0 (accessible from network)
+4. Loads the Quart app using the factory pattern
+
+## Command
 
 ```bash
-cd quart-template && QUART_APP="src.app:create_app()" quart run --reload
+PORT=${1:-5000}
+echo "Starting Quart development server on port $PORT..."
+export QUART_APP="src.app:create_app()"
+hypercorn "$QUART_APP" --bind 0.0.0.0:$PORT --reload
 ```
 
-The development server will start on http://localhost:5000 with:
-- Hot reload enabled (automatically restarts on code changes)
-- Debug mode active
-- Detailed error pages
-- Development configuration loaded
+## Notes
 
-You can access:
-- API endpoints at http://localhost:5000/api
-- Health check at http://localhost:5000/api/health
-- OpenAPI docs at http://localhost:5000/docs
-- WebSocket endpoints at ws://localhost:5000/ws
+- Press Ctrl+C to stop the server
+- Hot-reload watches for Python file changes
+- Access API documentation at http://localhost:$PORT/docs
+- Health check available at http://localhost:$PORT/health

@@ -82,3 +82,9 @@ pip-delete-this-directory.txt
 
 # MCP
 .serena/
+
+# Solo projects
+dream-weaver-simulator/
+fastapi-chat-template/
+sonic-pi-template/
+temp/

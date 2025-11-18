@@ -236,20 +236,23 @@ See `jupyter-ml-template/README.md` for detailed usage instructions.
 A production-ready Quart async web application template featuring:
 - Quart 0.19+ with full async/await support and Flask-compatible API
 - Native WebSocket support (echo, broadcast, chat patterns) without extensions
-- Async SQLAlchemy 2.0 with type-safe models for PostgreSQL, MySQL, and SQLite
+- Async SQLAlchemy 2.0 with type-safe `Mapped[]` annotations for PostgreSQL, MySQL, and SQLite
 - JWT authentication with access & refresh tokens for secure API access
 - Pydantic validation with Quart-Schema for automatic OpenAPI documentation (Swagger, ReDoc, Scalar)
 - Blueprint-based architecture for clean code organization (auth, API, WebSocket)
+- Alembic with async template for database migrations
 - Pytest with pytest-asyncio for comprehensive async testing
 - Hypercorn ASGI server for production deployment
-- Code quality tools: Ruff (linting), Black (formatting), Mypy (type checking)
-- 10 custom slash commands (/dev, /test, /create-blueprint, /create-model, /create-route, /create-websocket, etc.)
-- 5 specialized agents (Quart API expert, async security reviewer, database assistant, WebSocket helper, deployment advisor)
-- 3 skills for async error handling, API schema design, and background tasks
-- Complete example implementation with User authentication, CRUD operations, and real-time WebSocket chat
-- Docker support and comprehensive deployment guides for production
+- uv package manager for ultra-fast dependency management
+- Code quality tools: Ruff (linting/formatting), Mypy (type checking)
+- 16 custom slash commands (/dev, /test, /coverage, /lint, /format, /type-check, /db-migrate, /db-upgrade, /db-status, /create-route, /create-model, /create-blueprint, /create-websocket, /shell, /generate-docs, /prod-check)
+- 11 specialized agents (Quart expert, Quart security, Quart API expert, async security reviewer, database expert, database assistant, WebSocket expert, WebSocket helper, API optimizer, test generator, deployment advisor)
+- 7 skills for Quart patterns, API generation, API schema design, async error handling, background tasks, test helpers, and deployment guide
+- Complete example implementation with User authentication, CRUD operations, and real-time WebSocket examples
+- Docker support with multi-stage builds and docker-compose with PostgreSQL
+- Comprehensive documentation covering async patterns, WebSocket authentication, and production deployment
 
-**Best For**: Async REST APIs, real-time applications with WebSockets, high-concurrency backends, modern async Python services
+**Best For**: Async REST APIs, real-time applications with WebSockets, high-concurrency backends, modern async Python services, Flask-to-async migrations
 
 See `quart-template/README.md` for detailed usage instructions.
 

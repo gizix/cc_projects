@@ -1,36 +1,97 @@
 ---
-description: Add API endpoint with validation
-argument-hint: "<blueprint-name> <method> <path>"
+description: Generate new route blueprint
+argument-hint: <route_name>
+allowed-tools: Read, Write, Grep
+model: sonnet
 ---
 
-Add a new API route to an existing blueprint with Quart-Schema validation.
+Create a new route blueprint with boilerplate async route handlers, Pydantic schemas, and quart-schema integration.
 
-Arguments:
-- $1: Blueprint name (e.g., "api", "auth")
-- $2: HTTP method (GET, POST, PUT, DELETE)
-- $3: Route path (e.g., "/users/<int:user_id>")
+## Arguments
 
-I'll create a new $2 route at "$3" in the $1 blueprint.
+- `$1`: Route name (e.g., "posts", "comments", "products")
 
-Steps I'll take:
-1. Open `src/app/routes/$1/__init__.py`
-2. Add route handler with async function
-3. Add appropriate Quart-Schema decorators:
-   - @validate_request for POST/PUT
-   - @validate_response for all methods
-   - @tag for OpenAPI documentation
-4. Add authentication if needed (@require_auth or @optional_auth)
-5. Include error handling
-6. Create/update Pydantic schemas if needed
+## Usage
 
-Example result:
-```python
-@$1_bp.route("$3", methods=["$2"])
-@tag(["$1"])
-@validate_response(Schema, 200)
-async def handler():
-    # Implementation
-    pass
+```bash
+/create-route posts
+/create-route comments
+/create-route products
 ```
 
-Would you like me to proceed with creating this route?
+## What This Creates
+
+1. **Route Blueprint** (`src/app/routes/{name}.py`):
+   - Blueprint definition
+   - CRUD endpoint stubs (GET, POST, PUT, DELETE)
+   - Async route handlers
+   - JWT protection decorators
+   - quart-schema validation
+
+2. **Pydantic Schemas** (`src/app/schemas/{name}.py`):
+   - Request validation schemas
+   - Response serialization schemas
+   - Example fields with types
+
+3. **Blueprint Registration**:
+   - Updates `src/app/__init__.py` to register blueprint
+
+## Generated Route Example
+
+```python
+from quart import Blueprint, jsonify
+from quart_schema import validate_request, validate_response
+from quart_jwt_extended import jwt_required
+
+{name}_bp = Blueprint('{name}', __name__, url_prefix='/api/{name}')
+
+@{name}_bp.get('/')
+@jwt_required
+@validate_response({Name}ListResponse)
+async def list_{name}() -> tuple:
+    # TODO: Implement list logic
+    return {Name}ListResponse(items=[]), 200
+
+@{name}_bp.post('/')
+@jwt_required
+@validate_request({Name}CreateRequest)
+@validate_response({Name}Response)
+async def create_{name}(data: {Name}CreateRequest) -> tuple:
+    # TODO: Implement create logic
+    return {Name}Response(...), 201
+```
+
+## Generated Schema Example
+
+```python
+from dataclasses import dataclass
+from typing import Optional
+
+@dataclass
+class {Name}CreateRequest:
+    title: str
+    description: Optional[str] = None
+
+@dataclass
+class {Name}Response:
+    id: int
+    title: str
+    description: Optional[str]
+    created_at: str
+```
+
+## Next Steps After Generation
+
+1. Implement database operations in route handlers
+2. Add business logic
+3. Create corresponding model with `/create-model`
+4. Write tests for endpoints
+5. Customize schemas for your needs
+
+## Notes
+
+- Routes follow REST conventions
+- All handlers are async
+- JWT authentication included
+- Validation with quart-schema
+- Auto-generates OpenAPI docs

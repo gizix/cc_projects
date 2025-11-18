@@ -1,28 +1,54 @@
 ---
-description: Run pytest suite with coverage
+description: Run pytest test suite with async support
+argument-hint: [test_path]
+allowed-tools: Bash(*)
+model: sonnet
 ---
 
-Run the test suite using pytest with coverage reporting.
+Execute the test suite using pytest with pytest-asyncio for async test support.
 
-Execute the following command:
+## Arguments
+
+- `$ARGUMENTS`: Specific test path or pytest options (optional, runs all tests if omitted)
+
+## Usage
+
+- `/test` - Run all tests
+- `/test tests/test_auth.py` - Run specific test file
+- `/test tests/test_auth.py::test_login` - Run specific test
+- `/test -v` - Run with verbose output
+- `/test -k login` - Run tests matching "login"
+- `/test -x` - Stop on first failure
+
+## What This Does
+
+1. Discovers all test files in `tests/` directory
+2. Executes async tests using pytest-asyncio
+3. Shows test results and coverage information
+4. Reports failures with detailed tracebacks
+
+## Command
 
 ```bash
-cd quart-template && pytest tests/ -v --cov=src/app --cov-report=term-missing --cov-report=html
+pytest $ARGUMENTS
 ```
 
-This will:
-- Run all tests in the tests/ directory
-- Show verbose output (-v)
-- Generate coverage report for src/app
-- Display missing lines in terminal
-- Create HTML coverage report in htmlcov/
+## Test Structure
 
-To run specific tests:
-```bash
-pytest tests/test_api.py::TestAuthentication -v
+Tests should follow pytest-asyncio patterns:
+
+```python
+import pytest
+
+@pytest.mark.asyncio
+async def test_example(client):
+    response = await client.get('/api/endpoint')
+    assert response.status_code == 200
 ```
 
-To run tests and stop on first failure:
-```bash
-pytest tests/ -x
-```
+## Notes
+
+- All async tests must be marked with `@pytest.mark.asyncio`
+- Use fixtures from `tests/conftest.py` for app and client
+- Tests run in isolation with separate database state
+- WebSocket tests use `app.test_client().websocket()`

@@ -16,17 +16,17 @@ parts/
 sdist/
 var/
 wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
-# Virtual environments
+# Virtual Environments
 venv/
-env/
-ENV/
 .venv/
+ENV/
+env/
+.env
+.env.local
 
 # IDEs
 .vscode/
@@ -34,84 +34,33 @@ ENV/
 *.swp
 *.swo
 *~
-.DS_Store
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-app.db
 
 # Testing
 .pytest_cache/
 .coverage
 htmlcov/
-coverage.xml
-*.cover
-.hypothesis/
+.tox/
+.mypy_cache/
+.ruff_cache/
 
-# Logging
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
 *.log
 logs/
 
-# Mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Ruff
-.ruff_cache/
+# OS
+.DS_Store
+Thumbs.db
 
 # Alembic
-# Uncomment if you want to ignore migrations
-# alembic/versions/*.py
+alembic/versions/*.pyc
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# Distribution / packaging
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-nosetests.xml
-.tox/
-
-# Celery
-celerybeat-schedule
-celerybeat.pid
-
-# Flask/Quart
-instance/
-.webassets-cache
-
-# Scrapy
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Static/media files (if applicable)
-staticfiles/
-mediafiles/
-
-# Backup files
-*.bak
-*.backup
-*~
-
-# Temporary files
-tmp/
-temp/
-*.tmp
+# Secrets
+*.key
+*.pem
+credentials.json
+secrets.json

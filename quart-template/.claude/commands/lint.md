@@ -1,35 +1,58 @@
 ---
-description: Run Ruff + Black + Mypy
+description: Run Ruff linter to check code quality
+argument-hint: [--fix]
+allowed-tools: Bash(*)
+model: sonnet
 ---
 
-Run code quality tools: Ruff (linter), Black (formatter), and Mypy (type checker).
+Check code for style issues, errors, and potential bugs using Ruff linter.
 
-Execute the following commands:
+## Arguments
+
+- `$1`: `--fix` to automatically fix issues (optional)
+
+## Usage
+
+- `/lint` - Check code and report issues
+- `/lint --fix` - Check and automatically fix issues
+
+## What This Does
+
+Ruff checks for:
+- PEP 8 style violations
+- Common Python errors
+- Security issues (e.g., SQL injection patterns)
+- Unused imports and variables
+- Complexity issues
+- Async/await pattern errors
+- Type annotation issues
+
+## Command
 
 ```bash
-cd quart-template
-
-# Run Ruff linter (checks for errors and style issues)
-ruff check src/ tests/
-
-# Auto-fix Ruff issues where possible
-ruff check src/ tests/ --fix
-
-# Run Black formatter (formats code)
-black src/ tests/
-
-# Run Mypy type checker
-mypy src/
+if [ "$1" = "--fix" ]; then
+    echo "Running Ruff with auto-fix..."
+    ruff check src tests --fix
+else
+    echo "Running Ruff linter..."
+    ruff check src tests
+fi
 ```
 
-Combined one-liner to run all checks:
-```bash
-cd quart-template && ruff check src/ tests/ --fix && black src/ tests/ && mypy src/
-```
+## Ruff Rules Enabled
 
-Expected output:
-- Ruff: Lists any code quality issues and applies fixes
-- Black: Reformats files if needed
-- Mypy: Reports type errors if any
+- `E` - pycodestyle errors
+- `F` - Pyflakes
+- `I` - isort (import sorting)
+- `N` - pep8-naming
+- `W` - pycodestyle warnings
+- `S` - flake8-bandit (security)
+- `B` - flake8-bugbear
+- `ASYNC` - async/await issues
 
-Configuration is in pyproject.toml.
+## Notes
+
+- Auto-fix is safe and non-destructive
+- Manual review recommended after auto-fix
+- Some issues require manual intervention
+- Configuration in `pyproject.toml`
