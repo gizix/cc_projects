@@ -282,6 +282,28 @@ See `quart-template/README.md` for detailed usage instructions.
 
 ---
 
+### Autonomous Agent Template
+
+**Location**: `autonomous-agent-template/`
+
+A production-ready autonomous task automation platform — a self-contained Python daemon with scheduling, encrypted secrets, OS automation, and LLM chat:
+- APScheduler 3.10+ with SQLite job persistence — cron, interval, and one-time triggers that survive restarts
+- 5 built-in task types: desktop reminders (plyer), keyboard automation (pyautogui), program launch/close (psutil), HTTP requests (httpx + tenacity retry), LLM inference
+- Fernet + PBKDF2-HMAC-SHA256 encrypted credential store — values never in logs or SQLite
+- FastAPI + Jinja2 + Tailwind CSS + HTMX web dashboard at `http://localhost:7890` (6 pages, runs in a daemon thread)
+- LLM chat interface with streaming SSE — Azure OpenAI primary, OpenAI and local models (Ollama, LM Studio) as fallback
+- Optional Rust extension (PyO3 + Maturin) for `hash_task_id`, `cron_next_fire`, and fast PBKDF2 key derivation — pure-Python fallback always available
+- Cross-platform OS automation with headless guard (`AGENT_HEADLESS=1`) for safe Docker deployment
+- Multi-stage Dockerfile + docker-compose with optional external PostgreSQL profile
+- 13 slash commands, 6 specialized agents (task-architect, scheduler-expert, credential-guardian, automation-assistant, llm-integration-expert, rust-extension-advisor), 4 skills
+- Comprehensive test suite (6 test files) with temp-dir fixtures and headless automation guards
+
+**Best For**: Scheduled automation daemons, personal productivity bots, LLM-powered workflows, credential-safe task runners, cross-platform OS automation
+
+See `autonomous-agent-template/README.md` for detailed usage instructions.
+
+---
+
 *More templates coming soon! Check back for Node/Express, Vue.js, Next.js, and other frameworks.*
 
 ## Template Structure

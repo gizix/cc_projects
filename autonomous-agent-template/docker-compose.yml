@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  agent:
+    build: .
+    image: autonomous-agent:latest
+    container_name: autonomous-agent
+    restart: unless-stopped
+    ports:
+      - "7890:7890"
+    volumes:
+      - agent_data:/app/data
+    environment:
+      - MASTER_PASSWORD=${MASTER_PASSWORD}
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY:-}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT:-}
+      - AZURE_OPENAI_DEPLOYMENT=${AZURE_OPENAI_DEPLOYMENT:-gpt-4o}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o}
+      - WORKER_THREADS=${WORKER_THREADS:-4}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - AGENT_HEADLESS=1
+      - DATA_DIR=/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:7890/api/status').raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # Optional: external PostgreSQL (enable with --profile external-db)
+  postgres:
+    profiles: ["external-db"]
+    image: postgres:16-alpine
+    container_name: agent-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: agent_external
+      POSTGRES_USER: ${POSTGRES_USER:-agent}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  agent_data:
+    driver: local
+  postgres_data:
+    driver: local

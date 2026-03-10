@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}— Schedule Task{% endblock %}
+{% block content %}
+<div class="max-w-lg space-y-6">
+  <h2 class="text-lg font-bold text-gray-100">Schedule a Task</h2>
+
+  <form class="space-y-4" hx-post="/schedule/add" hx-swap="outerHTML">
+
+    <!-- Task type -->
+    <div>
+      <label class="block text-xs text-gray-400 mb-1">Task Type</label>
+      <select name="task_type" class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
+        {% for t in task_types %}
+        <option value="{{ t }}">{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Trigger type -->
+    <div>
+      <label class="block text-xs text-gray-400 mb-1">Trigger</label>
+      <select name="trigger_type" id="trigger-type"
+              class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-indigo-500">
+        <option value="cron">Cron (recurring)</option>
+        <option value="interval">Interval (every N seconds)</option>
+        <option value="once">One-time (ISO datetime)</option>
+      </select>
+    </div>
+
+    <!-- Trigger expression -->
+    <div>
+      <label class="block text-xs text-gray-400 mb-1">Expression</label>
+      <input type="text" name="trigger_expr" placeholder="*/5 * * * *"
+             class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-indigo-500"/>
+      <p class="text-xs text-gray-600 mt-1">For cron: min hour dom mon dow. For interval: seconds. For once: 2025-01-01T09:00:00</p>
+    </div>
+
+    <!-- Preview next fires -->
+    <div>
+      <button type="button"
+              hx-post="/schedule/preview"
+              hx-include="[name='trigger_expr']"
+              hx-target="#preview-result"
+              hx-swap="innerHTML"
+              class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded text-xs text-gray-200">
+        Preview Next Fires
+      </button>
+      <div id="preview-result" class="mt-2 text-xs text-indigo-300 space-y-0.5"></div>
+    </div>
+
+    <!-- Task config JSON -->
+    <div>
+      <label class="block text-xs text-gray-400 mb-1">Config (JSON)</label>
+      <textarea name="config_json" rows="5"
+                class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-xs text-gray-200 font-mono focus:outline-none focus:border-indigo-500"
+                placeholder='{"title": "My Reminder", "message": "Time to check in"}'></textarea>
+    </div>
+
+    <button type="submit"
+            class="w-full py-2 bg-indigo-700 hover:bg-indigo-600 rounded text-sm text-white font-semibold">
+      Schedule Task
+    </button>
+  </form>
+</div>
+
+<script>
+  document.body.addEventListener('htmx:afterSwap', function(e) {
+    if (e.detail.target.id === 'preview-result') {
+      try {
+        const data = JSON.parse(e.detail.xhr.responseText);
+        const el = document.getElementById('preview-result');
+        if (data.fires) {
+          el.innerHTML = data.fires.map(f => `<div>→ ${f}</div>`).join('');
+        } else if (data.error) {
+          el.innerHTML = `<span class="text-red-400">${data.error}</span>`;
+        }
+      } catch(_) {}
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+# Environment and secrets — NEVER commit
+.env
+data/
+*.credentials.enc
+*.enc.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dylib
+*.egg
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Rust / Maturin
+target/
+*.whl
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.tar
+
+# Logs
+*.log
+logs/

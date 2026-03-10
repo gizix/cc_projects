@@ -1,0 +1,26 @@
+# Core transcription
+faster-whisper>=1.0.0
+
+# Audio/video processing
+ffmpeg-python>=0.2.0
+
+# Live audio recording (loopback/system audio capture)
+sounddevice>=0.4.6
+soundfile>=0.12.1
+numpy>=1.24.0
+
+# CLI
+click>=8.1.0
+
+# Output formatting
+rich>=13.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-mock>=3.12.0
+
+# Linting/formatting
+ruff>=0.3.0

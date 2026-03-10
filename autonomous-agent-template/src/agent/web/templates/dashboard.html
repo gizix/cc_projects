@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}— Dashboard{% endblock %}
+{% block content %}
+<div class="space-y-6">
+  <h2 class="text-lg font-bold text-gray-100">Dashboard</h2>
+
+  <!-- Status cards -->
+  <div class="grid grid-cols-3 gap-4">
+    <div class="bg-gray-900 rounded-lg p-4 border border-gray-800">
+      <p class="text-xs text-gray-500 uppercase tracking-wide">Daemon</p>
+      <p class="mt-1 text-xl font-bold {% if status.running %}text-green-400{% else %}text-red-400{% endif %}">
+        {{ "Running" if status.running else "Stopped" }}
+      </p>
+    </div>
+    <div class="bg-gray-900 rounded-lg p-4 border border-gray-800">
+      <p class="text-xs text-gray-500 uppercase tracking-wide">Active Workers</p>
+      <p class="mt-1 text-xl font-bold text-indigo-400">{{ status.worker_active }}</p>
+    </div>
+    <div class="bg-gray-900 rounded-lg p-4 border border-gray-800">
+      <p class="text-xs text-gray-500 uppercase tracking-wide">Scheduled Jobs</p>
+      <p class="mt-1 text-xl font-bold text-indigo-400">{{ status.job_count }}</p>
+    </div>
+  </div>
+
+  <!-- Next 5 scheduled fires -->
+  {% if status.next_fires %}
+  <div class="bg-gray-900 rounded-lg p-4 border border-gray-800">
+    <h3 class="text-sm font-semibold text-gray-300 mb-3">Next Scheduled Fires</h3>
+    <ul class="space-y-1">
+      {% for job in status.next_fires %}
+      <li class="flex justify-between text-xs">
+        <span class="text-gray-400">{{ job.name }}</span>
+        <span class="text-indigo-300">{{ job.next_run or "—" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <!-- Last 10 task runs -->
+  <div class="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+    <div class="px-4 py-3 border-b border-gray-800">
+      <h3 class="text-sm font-semibold text-gray-300">Recent Task Runs</h3>
+    </div>
+    <table class="w-full text-xs">
+      <thead>
+        <tr class="border-b border-gray-800 text-gray-500 uppercase">
+          <th class="px-4 py-2 text-left">Job</th>
+          <th class="px-4 py-2 text-left">Type</th>
+          <th class="px-4 py-2 text-left">Status</th>
+          <th class="px-4 py-2 text-left">Started</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for run in runs %}
+        <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+          <td class="px-4 py-2 text-gray-300">{{ run.job_id }}</td>
+          <td class="px-4 py-2 text-gray-400">{{ run.task_type }}</td>
+          <td class="px-4 py-2">
+            <span class="status-pill status-{{ run.status }}">{{ run.status }}</span>
+          </td>
+          <td class="px-4 py-2 text-gray-500">{{ run.started_at[:19] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="px-4 py-6 text-center text-gray-600">No runs yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

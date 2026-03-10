@@ -1,0 +1,28 @@
+{
+  "model": "claude-sonnet-4-6",
+  "workingDirectory": ".",
+  "environment": {
+    "PYTHONPATH": "${workspaceFolder}/src"
+  },
+  "permissions": {
+    "deny": [
+      "read:.env",
+      "write:.env",
+      "read:data/.credentials.enc",
+      "write:data/.credentials.enc"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run ruff format \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}

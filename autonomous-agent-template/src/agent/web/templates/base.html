@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-950">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Autonomous Agent {% block title %}{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <style>
+    .status-pill { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium; }
+    .status-success { @apply bg-green-900 text-green-300; }
+    .status-error   { @apply bg-red-900 text-red-300; }
+    .status-running { @apply bg-blue-900 text-blue-300; }
+    .status-skipped { @apply bg-gray-700 text-gray-400; }
+  </style>
+</head>
+<body class="h-full text-gray-100 font-mono text-sm">
+<div class="flex h-full">
+
+  <!-- Sidebar -->
+  <aside class="w-52 bg-gray-900 border-r border-gray-800 flex flex-col">
+    <div class="px-4 py-5 border-b border-gray-800">
+      <h1 class="text-base font-bold text-indigo-400">⚙ Agent</h1>
+      <p class="text-xs text-gray-500 mt-1">Dashboard</p>
+    </div>
+    <nav class="flex-1 px-2 py-4 space-y-1">
+      {% set links = [
+        ("dashboard", "/",             "📊 Dashboard"),
+        ("tasks",     "/tasks",        "🔧 Tasks"),
+        ("schedule",  "/schedule",     "🗓 Schedule"),
+        ("credentials","/credentials","🔑 Credentials"),
+        ("llm",       "/llm",          "🤖 LLM Chat"),
+        ("logs",      "/logs",         "📋 Logs"),
+      ] %}
+      {% for id, href, label in links %}
+      <a href="{{ href }}"
+         class="flex items-center px-3 py-2 rounded-md text-xs transition-colors
+                {% if page == id %}bg-indigo-800 text-white{% else %}text-gray-400 hover:bg-gray-800{% endif %}">
+        {{ label }}
+      </a>
+      {% endfor %}
+    </nav>
+    <!-- Status bar -->
+    <div class="px-4 py-3 border-t border-gray-800">
+      <div id="status-bar"
+           hx-get="/api/status"
+           hx-trigger="every 5s"
+           hx-swap="innerHTML">
+        <span class="text-xs text-gray-500">Loading…</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 overflow-auto bg-gray-950 p-6">
+    {% block content %}{% endblock %}
+  </main>
+</div>
+
+<script>
+  // Render status bar after HTMX swap
+  document.body.addEventListener('htmx:afterSwap', function(e) {
+    if (e.detail.target.id === 'status-bar') {
+      const data = JSON.parse(e.detail.xhr.responseText || '{}');
+      const running = data.running;
+      const bar = document.getElementById('status-bar');
+      bar.innerHTML = `
+        <span class="status-pill ${running ? 'status-success' : 'status-error'}">
+          ${running ? '● Running' : '○ Stopped'}
+        </span>
+        <span class="block text-xs text-gray-500 mt-1">${data.job_count || 0} jobs</span>
+      `;
+    }
+  });
+</script>
+</body>
+</html>

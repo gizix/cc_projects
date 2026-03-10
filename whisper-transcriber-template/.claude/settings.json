@@ -1,0 +1,22 @@
+{
+  "model": "claude-sonnet-4-6",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run ruff format \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "deny": [
+      "read:.env",
+      "write:.env"
+    ]
+  }
+}
